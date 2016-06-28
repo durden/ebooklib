@@ -1328,46 +1328,50 @@ class EpubReader(object):
             if media_type == 'application/x-dtbncx+xml':
                 ei = EpubNcx(uid=r.get('id'), file_name=unquote(r.get('href')))
 
+                print 'Reading', ei.file_name
                 ei.content = self.read_file(zip_path.join(self.opf_dir, ei.file_name))
-            elif media_type == 'application/xhtml+xml':
-                if 'nav' in properties:
-                    ei = EpubNav(uid=r.get('id'), file_name=unquote(r.get('href')))
-
-                    ei.content = self.read_file(zip_path.join(self.opf_dir, r.get('href')))
-                elif 'cover' in properties:
-                    ei = EpubCoverHtml()
-
-                    ei.content = self.read_file(os_path.join(self.opf_dir, unquote(r.get('href'))))
-                else:
-                    ei = EpubHtml()
-
-                    ei.id = r.get('id')
-                    ei.file_name = unquote(r.get('href'))
-                    ei.media_type = media_type
-                    ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
-                    ei.properties = properties
-            elif media_type in IMAGE_MEDIA_TYPES:
-                if 'cover-image' in properties:
-                    ei = EpubCover(uid=r.get('id'), file_name=unquote(r.get('href')))
-
-                    ei.media_type = media_type
-                    ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
-                else:
-                    ei = EpubImage()
-
-                    ei.id = r.get('id')
-                    ei.file_name = unquote(r.get('href'))
-                    ei.media_type = media_type
-                    ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
             else:
+                continue
+
+            #elif media_type == 'application/xhtml+xml':
+                #if 'nav' in properties:
+                    #ei = EpubNav(uid=r.get('id'), file_name=unquote(r.get('href')))
+
+                    #ei.content = self.read_file(zip_path.join(self.opf_dir, r.get('href')))
+                #elif 'cover' in properties:
+                    #ei = EpubCoverHtml()
+
+                    #ei.content = self.read_file(os_path.join(self.opf_dir, unquote(r.get('href'))))
+                #else:
+                    #ei = EpubHtml()
+
+                    #ei.id = r.get('id')
+                    #ei.file_name = unquote(r.get('href'))
+                    #ei.media_type = media_type
+                    #ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
+                    #ei.properties = properties
+            #elif media_type in IMAGE_MEDIA_TYPES:
+                #if 'cover-image' in properties:
+                    #ei = EpubCover(uid=r.get('id'), file_name=unquote(r.get('href')))
+
+                    #ei.media_type = media_type
+                    #ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
+                #else:
+                    #ei = EpubImage()
+
+                    #ei.id = r.get('id')
+                    #ei.file_name = unquote(r.get('href'))
+                    #ei.media_type = media_type
+                    #ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
+            #else:
                 # different types
-                ei = EpubItem()
+                #ei = EpubItem()
 
-                ei.id = r.get('id')
-                ei.file_name = unquote(r.get('href'))
-                ei.media_type = media_type
+                #ei.id = r.get('id')
+                #ei.file_name = unquote(r.get('href'))
+                #ei.media_type = media_type
 
-                ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
+                #ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
               # r.get('properties')
 
             self.book.add_item(ei)
@@ -1530,6 +1534,6 @@ def read_epub(name, options=None):
     reader = EpubReader(name, options)
 
     book = reader.load()
-    reader.process()
+    #reader.process()
 
     return book
